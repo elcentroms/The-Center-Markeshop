@@ -1,1557 +1,215 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>The Center Markeshop</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Anton&family=Space+Mono:wght@400;700&family=Work+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
-<style>
-  :root{
-    --paper:#FAF6EC;
-    --paper-dark:#FFFFFF;
-    --ink:#1C2230;
-    --petrol:#1B4F72;
-    --petrol-dark:#0F3252;
-    --brick:#C9A227;
-    --mango:#E3C066;
-    --line: rgba(28,34,48,0.18);
-  }
-  *{box-sizing:border-box; margin:0; padding:0;}
-  html{scroll-behavior:smooth;}
-  body{
-    background-color:#BFE0F2;
-    color:var(--ink);
-    font-family:'Work Sans', sans-serif;
-    padding-bottom:60px;
-    position:relative;
-    min-height:100vh;
-  }
-  /* FONDO FIJO — imagen de la Virgen, completa, sin recortes */
-  .hero-bg{
-    position:fixed;
-    inset:0;
-    z-index:-1;
-    background-color:#BFE0F2;
-    background-image:
-      linear-gradient(180deg, rgba(191,224,242,0.05) 0%, rgba(191,224,242,0.45) 55%, rgba(250,246,236,0.7) 100%),
-      url('logo-virgen.jpg');
-    background-repeat:no-repeat;
-    background-position:center 8%;
-    background-size:contain;
-  }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Center Markeshop - Catálogo</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
 
-  /* HEADER — waybill style */
-  header{
-    padding:22px 18px 34px 18px;
-    max-width:720px; margin:0 auto;
-    position:relative;
-    display:flex;
-    justify-content:flex-start;
-  }
-  .brand-logo{
-    width:140px; height:140px;
-    border-radius:50%;
-    overflow:hidden;
-    border:4px solid var(--brick);
-    box-shadow:0 4px 16px rgba(15,50,82,0.3);
-    background:var(--paper-dark);
-  }
-  .brand-logo img{
-    width:100%; height:100%;
-    object-fit:cover;
-    object-position:center 22%;
-    display:block;
-  }
-  /* AVISO DE PRECIOS */
-  /* CARDS — grid 2 columnas */
-  .tabs{
-    display:flex; gap:8px; padding:4px 18px 16px;
-    max-width:720px; margin:0 auto;
-    overflow-x:auto;
-  }
-  .tab{
-    font-family:'Space Mono', monospace;
-    font-size:12px; font-weight:700; text-transform:uppercase; letter-spacing:0.4px;
-    padding:8px 14px;
-    border:2px solid var(--ink);
-    background:transparent;
-    color:var(--ink);
-    border-radius:20px;
-    cursor:pointer;
-    white-space:nowrap;
-    transition:all 0.15s ease;
-    flex-shrink:0;
-  }
-  .tab.active{
-    background:var(--petrol-dark);
-    border-color:var(--petrol-dark);
-    color:var(--paper);
-  }
+    body {
+      background-color: #f4f6f9;
+      padding-bottom: 80px;
+    }
 
-  .cards{
-    display:grid; grid-template-columns:1fr 1fr; gap:12px;
-    max-width:720px; margin:0 auto; padding:0 18px;
-  }
-  .card{
-    background:rgba(255,255,255,0.82);
-    backdrop-filter:blur(7px);
-    -webkit-backdrop-filter:blur(7px);
-    border:2px solid var(--petrol-dark);
-    position:relative;
-    overflow:hidden;
-    display:flex; flex-direction:column;
-    box-shadow:0 3px 12px rgba(15,50,82,0.12);
-  }
-  .card-img{
-    width:100%; aspect-ratio:1/1; object-fit:cover;
-    display:block;
-    filter:saturate(1.05);
-    border-bottom:2px solid var(--ink);
-    cursor:zoom-in;
-  }
-  .card-body{padding:10px 10px 12px; display:flex; flex-direction:column; flex:1;}
-  .combo-name{
-    font-family:'Anton', sans-serif;
-    font-size:15px; text-transform:uppercase;
-    color:var(--petrol-dark);
-    line-height:1.08;
-    letter-spacing:0.2px;
-    margin-bottom:6px;
-  }
-  .badge{
-    display:inline-block;
-    font-family:'Space Mono', monospace;
-    font-size:9px; font-weight:700; text-transform:uppercase; letter-spacing:0.4px;
-    color:var(--petrol-dark);
-    border:1.5px solid var(--petrol-dark);
-    padding:2px 6px;
-    border-radius:3px;
-    margin-bottom:6px;
-    align-self:flex-start;
-  }
-  .manifest{
-    list-style:none;
-    font-size:11.5px; line-height:1.55;
-    color:var(--ink); opacity:0.85;
-    margin-bottom:10px;
-    flex:1;
-  }
-  .manifest li{
-    display:flex; gap:5px;
-  }
-  .manifest li::before{
-    content:'—';
-    color:var(--brick); font-weight:700; flex-shrink:0;
-  }
-  .cart-add-btn{
-    width:100%;
-    display:flex; align-items:center; justify-content:center; gap:6px;
-    background:var(--petrol-dark);
-    color:var(--paper);
-    border:none;
-    font-family:'Space Mono', monospace;
-    font-weight:700; font-size:11.5px; text-transform:uppercase; letter-spacing:0.5px;
-    padding:9px 6px;
-    cursor:pointer;
-    transition:background 0.15s ease;
-    margin-top:auto;
-  }
-  .cart-add-btn:hover{background:#0f2b27;}
-  .cart-add-btn svg{width:14px; height:14px; fill:var(--paper); flex-shrink:0;}
-  .cart-add-btn.just-added{background:var(--brick);}
+    header {
+      background-color: #1b2a47;
+      color: white;
+      padding: 15px;
+      text-align: center;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    }
 
-  .qty-stepper{display:flex; align-items:center; border:2px solid var(--ink);}
-  .qty-stepper button{
-    width:28px; height:28px;
-    background:transparent; border:none;
-    font-size:16px; font-weight:700; cursor:pointer;
-    color:var(--ink);
-    font-family:'Space Mono', monospace;
-  }
-  .qty-stepper span{
-    min-width:22px; text-align:center;
-    font-family:'Space Mono', monospace; font-weight:700; font-size:13px;
-  }
+    header h1 {
+      font-size: 1.4rem;
+    }
 
-  /* FLOATING CART */
-  .lightbox-overlay{
-    position:fixed; inset:0; background:rgba(15,15,13,0.92);
-    display:none; z-index:80;
-    align-items:center; justify-content:center;
-    padding:24px;
-  }
-  .lightbox-overlay.open{display:flex;}
-  .lightbox-overlay img{
-    max-width:100%; max-height:100%;
-    object-fit:contain;
-    border:3px solid var(--paper);
-  }
-  .lightbox-close{
-    position:fixed; top:18px; right:18px;
-    width:42px; height:42px; border-radius:50%;
-    background:var(--paper); border:none;
-    font-size:24px; line-height:1; color:var(--ink);
-    cursor:pointer; z-index:81;
-  }
+    /* Barra de Categorías */
+    .categorias {
+      display: flex;
+      gap: 10px;
+      overflow-x: auto;
+      padding: 12px 15px;
+      background: #ffffff;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    }
 
-  .cart-fab{
-    position:fixed; bottom:18px; right:18px;
-    width:58px; height:58px; border-radius:50%;
-    background:var(--petrol-dark);
-    display:flex; align-items:center; justify-content:center;
-    box-shadow:0 4px 14px rgba(20,61,49,0.4);
-    cursor:pointer; border:none;
-    z-index:50;
-  }
-  .cart-fab svg{width:24px; height:24px; fill:var(--paper);}
-  .cart-badge{
-    position:absolute; top:-4px; right:-4px;
-    background:var(--brick); color:var(--paper);
-    font-family:'Space Mono', monospace; font-weight:700; font-size:11px;
-    width:22px; height:22px; border-radius:50%;
-    display:flex; align-items:center; justify-content:center;
-    border:2px solid var(--paper);
-  }
+    .btn-cat {
+      background-color: #e9ecef;
+      border: none;
+      padding: 8px 16px;
+      border-radius: 20px;
+      font-weight: 600;
+      font-size: 0.9rem;
+      color: #495057;
+      cursor: pointer;
+      white-space: nowrap;
+    }
 
-  .cart-overlay{
-    position:fixed; inset:0; background:rgba(20,25,20,0.5);
-    display:none; z-index:60;
-    align-items:flex-end;
-  }
-  .cart-overlay.open{display:flex;}
-  .cart-panel{
-    background:var(--paper); width:100%; max-height:82vh;
-    border-top:3px solid var(--ink);
-    display:flex; flex-direction:column;
-    animation:slideUp 0.2s ease;
-  }
-  @keyframes slideUp{from{transform:translateY(30px); opacity:0;} to{transform:translateY(0); opacity:1;}}
-  .cart-header{
-    display:flex; justify-content:space-between; align-items:center;
-    padding:16px 18px; border-bottom:2px dashed var(--line);
-  }
-  .cart-header h3{font-family:'Anton', sans-serif; font-size:20px; text-transform:uppercase; color:var(--petrol-dark);}
-  .cart-close{background:none; border:none; font-size:22px; cursor:pointer; color:var(--ink); line-height:1;}
-  .cart-items{overflow-y:auto; padding:10px 18px; flex:1;}
-  .cart-empty{text-align:center; padding:30px 10px; opacity:0.6; font-size:14px;}
-  .cart-line{
-    display:flex; justify-content:space-between; align-items:center;
-    padding:10px 0; border-bottom:1px dashed var(--line);
-    gap:10px;
-  }
-  .cart-line-name{font-size:13px; font-weight:600; flex:1; line-height:1.3;}
-  .cart-line-controls{display:flex; align-items:center; gap:8px;}
-  .cart-line-remove{background:none; border:none; color:var(--brick); font-size:16px; cursor:pointer;}
-  .cart-footer{padding:16px 18px 20px; border-top:2px solid var(--ink);}
-  .cart-total{
-    display:flex; justify-content:space-between; align-items:center;
-    font-family:'Space Mono', monospace; font-weight:700; font-size:15px;
-    margin-bottom:12px;
-    color:var(--petrol-dark);
-  }
-  .cart-note{
-    font-size:11.5px; color:var(--ink); opacity:0.7;
-    margin-bottom:12px; line-height:1.4;
-  }
-  .cart-send-btn{
-    display:flex; align-items:center; justify-content:center; gap:8px;
-    width:100%; background:var(--brick); color:var(--paper);
-    border:none; padding:14px;
-    font-family:'Space Mono', monospace; font-weight:700; font-size:14px;
-    text-transform:uppercase; letter-spacing:0.6px;
-    cursor:pointer; text-decoration:none;
-  }
-  .cart-send-btn svg{width:16px; height:16px; fill:var(--paper);}
+    .btn-cat.activo {
+      background-color: #25d366;
+      color: white;
+    }
 
-  footer{
-    max-width:684px; margin:34px auto 0; padding:20px 18px 14px;
-    border-top:2px dashed var(--line);
-    text-align:center;
-    background:rgba(255,253,248,0.6);
-    backdrop-filter:blur(6px);
-    -webkit-backdrop-filter:blur(6px);
-    border-radius:4px 4px 0 0;
-  }
-  footer p{
-    font-family:'Space Mono', monospace;
-    font-size:11px; letter-spacing:0.5px;
-    color:var(--ink); opacity:0.65;
-  }
-</style>
+    /* Cuadrícula de Productos */
+    .contenedor {
+      padding: 15px;
+    }
+
+    .grid-productos {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+      gap: 15px;
+    }
+
+    .tarjeta-producto {
+      background: white;
+      border-radius: 10px;
+      padding: 10px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.06);
+    }
+
+    .tarjeta-producto img {
+      width: 100%;
+      height: 130px;
+      object-fit: cover;
+      border-radius: 8px;
+    }
+
+    .tarjeta-producto h3 {
+      font-size: 0.95rem;
+      margin: 10px 0;
+      color: #212529;
+      text-align: center;
+    }
+
+    .btn-agregar {
+      background-color: #25d366;
+      color: white;
+      border: none;
+      padding: 8px;
+      border-radius: 6px;
+      font-weight: bold;
+      width: 100%;
+      cursor: pointer;
+    }
+
+    /* Botón Flotante del Carrito */
+    .carrito-flotante {
+      position: fixed;
+      bottom: 15px;
+      left: 50%;
+      transform: translateX(-50%);
+      background-color: #128c7e;
+      color: white;
+      padding: 12px 24px;
+      border-radius: 30px;
+      font-weight: bold;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      cursor: pointer;
+      width: 90%;
+      max-width: 400px;
+      justify-content: center;
+    }
+  </style>
 </head>
 <body>
 
-<div class="hero-bg" aria-hidden="true"></div>
-
-<header>
-  <div class="brand-logo"><img src="logo-virgen.jpg" alt="Logo The Center Markeshop"></div>
-</header>
-
-<div class="tabs">
-  <button class="tab active" data-filter="all">Todos</button>
-  <button class="tab" data-filter="enlatados">Enlatados</button>
-  <button class="tab" data-filter="carnicos">Cárnicos</button>
-  <button class="tab" data-filter="granos">Granos</button>
-  <button class="tab" data-filter="pastas">Pastas</button>
-  <button class="tab" data-filter="frutas-vegetales">Frutas y Vegetales</button>
-  <button class="tab" data-filter="bebidas">Bebidas</button>
-  <button class="tab" data-filter="aseo">Aseo</button>
-  <button class="tab" data-filter="confituras">Confituras</button>
-  <button class="tab" data-filter="electricos">Eléctricos y del Hogar</button>
-</div>
-
-<main class="cards" id="cards">
-
-
-  <article class="card" data-cat="granos">
-    <img class="card-img" src="sazon-goya.jpg" alt="Sazón Goya" loading="lazy">
-    <div class="card-body">
-      <div class="combo-name">Sazón Goya</div>
-      <button class="cart-add-btn" data-name="Sazón Goya">
-        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12L8.1 13h7.45c.75 0 1.41-.41 1.75-1.03L20.88 5H4.54l-.94-2H1zM17 18c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z"/></svg>
-        Agregar
-      </button>
-    </div>
-  </article>
-
-  <article class="card" data-cat="enlatados">
-    <img class="card-img" src="mayonesa.jpg" alt="Mayonesa Los Atrevidos" loading="lazy">
-    <div class="card-body">
-      <div class="combo-name">Mayonesa Los Atrevidos</div>
-      <button class="cart-add-btn" data-name="Mayonesa Los Atrevidos">
-        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12L8.1 13h7.45c.75 0 1.41-.41 1.75-1.03L20.88 5H4.54l-.94-2H1zM17 18c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z"/></svg>
-        Agregar
-      </button>
-    </div>
-  </article>
-
-  <article class="card" data-cat="granos">
-    <img class="card-img" src="cafe-variedad.jpg" alt="Café Bustelo" loading="lazy">
-    <div class="card-body">
-      <div class="combo-name">Café Bustelo</div>
-      <ul class="manifest">
-        <li>Paquete de café</li>
-      </ul>
-      <button class="cart-add-btn" data-name="Café Bustelo">
-        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12L8.1 13h7.45c.75 0 1.41-.41 1.75-1.03L20.88 5H4.54l-.94-2H1zM17 18c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z"/></svg>
-        Agregar
-      </button>
-    </div>
-  </article>
-
-  <article class="card" data-cat="pastas">
-    <img class="card-img" src="fideos.jpg" alt="Fideos" loading="lazy">
-    <div class="card-body">
-      <div class="combo-name">Fideos</div>
-      <button class="cart-add-btn" data-name="Fideos">
-        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12L8.1 13h7.45c.75 0 1.41-.41 1.75-1.03L20.88 5H4.54l-.94-2H1zM17 18c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z"/></svg>
-        Agregar
-      </button>
-    </div>
-  </article>
-
-  <article class="card" data-cat="pastas">
-    <img class="card-img" src="coditos.jpg" alt="Coditos" loading="lazy">
-    <div class="card-body">
-      <div class="combo-name">Coditos</div>
-      <button class="cart-add-btn" data-name="Coditos">
-        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12L8.1 13h7.45c.75 0 1.41-.41 1.75-1.03L20.88 5H4.54l-.94-2H1zM17 18c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z"/></svg>
-        Agregar
-      </button>
-    </div>
-  </article>
-
-  <article class="card" data-cat="enlatados">
-    <img class="card-img" src="aceite.jpg" alt="Aceite Vegetal" loading="lazy">
-    <div class="card-body">
-      <div class="combo-name">Aceite Vegetal</div>
-      <button class="cart-add-btn" data-name="Aceite Vegetal">
-        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12L8.1 13h7.45c.75 0 1.41-.41 1.75-1.03L20.88 5H4.54l-.94-2H1zM17 18c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z"/></svg>
-        Agregar
-      </button>
-    </div>
-  </article>
-
-  <article class="card" data-cat="granos">
-    <img class="card-img" src="frijoles-rojos.jpg" alt="Frijoles Rojos" loading="lazy">
-    <div class="card-body">
-      <div class="combo-name">Frijoles Rojos</div>
-      <button class="cart-add-btn" data-name="Frijoles Rojos">
-        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12L8.1 13h7.45c.75 0 1.41-.41 1.75-1.03L20.88 5H4.54l-.94-2H1zM17 18c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z"/></svg>
-        Agregar
-      </button>
-    </div>
-  </article>
-
-  <article class="card" data-cat="pastas">
-    <img class="card-img" src="spaghetti.jpg" alt="Spaghetti" loading="lazy">
-    <div class="card-body">
-      <div class="combo-name">Spaghetti</div>
-      <button class="cart-add-btn" data-name="Spaghetti">
-        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12L8.1 13h7.45c.75 0 1.41-.41 1.75-1.03L20.88 5H4.54l-.94-2H1zM17 18c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z"/></svg>
-        Agregar
-      </button>
-    </div>
-  </article>
-
-  <article class="card" data-cat="carnicos">
-    <img class="card-img" src="huevos.jpg" alt="Cartón de Huevos" loading="lazy">
-    <div class="card-body">
-      <div class="combo-name">Cartón de Huevos</div>
-      <button class="cart-add-btn" data-name="Cartón de Huevos">
-        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12L8.1 13h7.45c.75 0 1.41-.41 1.75-1.03L20.88 5H4.54l-.94-2H1zM17 18c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z"/></svg>
-        Agregar
-      </button>
-    </div>
-  </article>
-
-  <article class="card" data-cat="carnicos">
-    <img class="card-img" src="pollo-10lb.jpg" alt="Pollo 10 lb" loading="lazy">
-    <div class="card-body">
-      <div class="combo-name">Pollo 10 lb</div>
-      <button class="cart-add-btn" data-name="Pollo 10 lb">
-        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12L8.1 13h7.45c.75 0 1.41-.41 1.75-1.03L20.88 5H4.54l-.94-2H1zM17 18c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z"/></svg>
-        Agregar
-      </button>
-    </div>
-  </article>
-
-  <article class="card" data-cat="carnicos">
-    <img class="card-img" src="pollo-5lb.jpg" alt="Pollo 5 lb" loading="lazy">
-    <div class="card-body">
-      <div class="combo-name">Pollo 5 lb</div>
-      <button class="cart-add-btn" data-name="Pollo 5 lb">
-        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12L8.1 13h7.45c.75 0 1.41-.41 1.75-1.03L20.88 5H4.54l-.94-2H1zM17 18c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z"/></svg>
-        Agregar
-      </button>
-    </div>
-  </article>
-
-  <article class="card" data-cat="carnicos">
-    <img class="card-img" src="salchichas.jpg" alt="Salchichas" loading="lazy">
-    <div class="card-body">
-      <div class="combo-name">Salchichas</div>
-      <button class="cart-add-btn" data-name="Salchichas">
-        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12L8.1 13h7.45c.75 0 1.41-.41 1.75-1.03L20.88 5H4.54l-.94-2H1zM17 18c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z"/></svg>
-        Agregar
-      </button>
-    </div>
-  </article>
-
-  <article class="card" data-cat="granos">
-    <img class="card-img" src="arroz.jpg" alt="Arroz blanco" loading="lazy">
-    <div class="card-body">
-      <div class="combo-name">Arroz blanco</div>
-      <button class="cart-add-btn" data-name="Arroz blanco">
-        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12L8.1 13h7.45c.75 0 1.41-.41 1.75-1.03L20.88 5H4.54l-.94-2H1zM17 18c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z"/></svg>
-        Agregar
-      </button>
-    </div>
-  </article>
-
-  <article class="card" data-cat="granos">
-    <img class="card-img" src="frijoles-negros.jpg" alt="Frijoles negros" loading="lazy">
-    <div class="card-body">
-      <div class="combo-name">Frijoles negros</div>
-      <button class="cart-add-btn" data-name="Frijoles negros">
-        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12L8.1 13h7.45c.75 0 1.41-.41 1.75-1.03L20.88 5H4.54l-.94-2H1zM17 18c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z"/></svg>
-        Agregar
-      </button>
-    </div>
-  </article>
-
-  <article class="card" data-cat="carnicos">
-    <img class="card-img" src="jamon-ahumado.jpg" alt="Jamón ahumado" loading="lazy">
-    <div class="card-body">
-      <div class="combo-name">Jamón ahumado</div>
-      <button class="cart-add-btn" data-name="Jamón ahumado">
-        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12L8.1 13h7.45c.75 0 1.41-.41 1.75-1.03L20.88 5H4.54l-.94-2H1zM17 18c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z"/></svg>
-        Agregar
-      </button>
-    </div>
-  </article>
-
-  <article class="card" data-cat="carnicos">
-    <img class="card-img" src="lomo-ahumado.jpg" alt="Lomo ahumado" loading="lazy">
-    <div class="card-body">
-      <div class="combo-name">Lomo ahumado</div>
-      <button class="cart-add-btn" data-name="Lomo ahumado">
-        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12L8.1 13h7.45c.75 0 1.41-.41 1.75-1.03L20.88 5H4.54l-.94-2H1zM17 18c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z"/></svg>
-        Agregar
-      </button>
-    </div>
-  </article>
-
-  <article class="card" data-cat="carnicos">
-    <img class="card-img" src="queso-gouda.jpg" alt="Queso Gouda" loading="lazy">
-    <div class="card-body">
-      <div class="combo-name">Queso Gouda</div>
-      <button class="cart-add-btn" data-name="Queso Gouda">
-        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12L8.1 13h7.45c.75 0 1.41-.41 1.75-1.03L20.88 5H4.54l-.94-2H1zM17 18c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z"/></svg>
-        Agregar
-      </button>
-    </div>
-  </article>
-
-  <article class="card" data-cat="carnicos">
-    <img class="card-img" src="queso-blanco.jpg" alt="Queso blanco" loading="lazy">
-    <div class="card-body">
-      <div class="combo-name">Queso blanco</div>
-      <button class="cart-add-btn" data-name="Queso blanco">
-        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12L8.1 13h7.45c.75 0 1.41-.41 1.75-1.03L20.88 5H4.54l-.94-2H1zM17 18c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z"/></svg>
-        Agregar
-      </button>
-    </div>
-  </article>
-
-  <article class="card" data-cat="carnicos">
-    <img class="card-img" src="tocineta.jpg" alt="Tocineta" loading="lazy">
-    <div class="card-body">
-      <div class="combo-name">Tocineta</div>
-      <button class="cart-add-btn" data-name="Tocineta">
-        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12L8.1 13h7.45c.75 0 1.41-.41 1.75-1.03L20.88 5H4.54l-.94-2H1zM17 18c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z"/></svg>
-        Agregar
-      </button>
-    </div>
-  </article>
-
-  <article class="card" data-cat="carnicos">
-    <img class="card-img" src="lomo-cerdo.jpg" alt="Lomo de cerdo" loading="lazy">
-    <div class="card-body">
-      <div class="combo-name">Lomo de cerdo</div>
-      <button class="cart-add-btn" data-name="Lomo de cerdo">
-        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12L8.1 13h7.45c.75 0 1.41-.41 1.75-1.03L20.88 5H4.54l-.94-2H1zM17 18c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z"/></svg>
-        Agregar
-      </button>
-    </div>
-  </article>
-
-  <article class="card" data-cat="carnicos">
-    <img class="card-img" src="pernil-cerdo.jpg" alt="Pernil de cerdo" loading="lazy">
-    <div class="card-body">
-      <div class="combo-name">Pernil de cerdo</div>
-      <button class="cart-add-btn" data-name="Pernil de cerdo">
-        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12L8.1 13h7.45c.75 0 1.41-.41 1.75-1.03L20.88 5H4.54l-.94-2H1zM17 18c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z"/></svg>
-        Agregar
-      </button>
-    </div>
-  </article>
-
-  <article class="card" data-cat="carnicos">
-    <img class="card-img" src="picadillo-mixto.jpg" alt="Picadillo mixto" loading="lazy">
-    <div class="card-body">
-      <div class="combo-name">Picadillo mixto</div>
-      <button class="cart-add-btn" data-name="Picadillo mixto">
-        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12L8.1 13h7.45c.75 0 1.41-.41 1.75-1.03L20.88 5H4.54l-.94-2H1zM17 18c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z"/></svg>
-        Agregar
-      </button>
-    </div>
-  </article>
-
-  <article class="card" data-cat="granos">
-    <img class="card-img" src="cebollas-moradas.jpg" alt="Cebollas moradas" loading="lazy">
-    <div class="card-body">
-      <div class="combo-name">Cebollas moradas</div>
-      <button class="cart-add-btn" data-name="Cebollas moradas">
-        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12L8.1 13h7.45c.75 0 1.41-.41 1.75-1.03L20.88 5H4.54l-.94-2H1zM17 18c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z"/></svg>
-        Agregar
-      </button>
-    </div>
-  </article>
-
-  <article class="card" data-cat="granos">
-    <img class="card-img" src="cebolla-blanca.jpg" alt="Cebolla blanca" loading="lazy">
-    <div class="card-body">
-      <div class="combo-name">Cebolla blanca</div>
-      <button class="cart-add-btn" data-name="Cebolla blanca">
-        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12L8.1 13h7.45c.75 0 1.41-.41 1.75-1.03L20.88 5H4.54l-.94-2H1zM17 18c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z"/></svg>
-        Agregar
-      </button>
-    </div>
-  </article>
-
-  <article class="card" data-cat="granos">
-    <img class="card-img" src="ajo.jpg" alt="Ajo" loading="lazy">
-    <div class="card-body">
-      <div class="combo-name">Ajo</div>
-      <button class="cart-add-btn" data-name="Ajo">
-        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12L8.1 13h7.45c.75 0 1.41-.41 1.75-1.03L20.88 5H4.54l-.94-2H1zM17 18c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z"/></svg>
-        Agregar
-      </button>
-    </div>
-  </article>
-
-  <article class="card" data-cat="carnicos">
-    <img class="card-img" src="paleta-cerdo.jpg" alt="Paleta de cerdo" loading="lazy">
-    <div class="card-body">
-      <div class="combo-name">Paleta de cerdo</div>
-      <button class="cart-add-btn" data-name="Paleta de cerdo">
-        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12L8.1 13h7.45c.75 0 1.41-.41 1.75-1.03L20.88 5H4.54l-.94-2H1zM17 18c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z"/></svg>
-        Agregar
-      </button>
-    </div>
-  </article>
-
-  <article class="card" data-cat="enlatados">
-    <img class="card-img" src="carne-prensada.jpg" alt="Latas de carne prensada" loading="lazy">
-    <div class="card-body">
-      <div class="combo-name">Latas de carne prensada</div>
-      <button class="cart-add-btn" data-name="Latas de carne prensada">
-        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12L8.1 13h7.45c.75 0 1.41-.41 1.75-1.03L20.88 5H4.54l-.94-2H1zM17 18c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z"/></svg>
-        Agregar
-      </button>
-    </div>
-  </article>
-
-  <article class="card" data-cat="enlatados">
-    <img class="card-img" src="sardinas.jpg" alt="Sardinas" loading="lazy">
-    <div class="card-body">
-      <div class="combo-name">Sardinas</div>
-      <button class="cart-add-btn" data-name="Sardinas">
-        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12L8.1 13h7.45c.75 0 1.41-.41 1.75-1.03L20.88 5H4.54l-.94-2H1zM17 18c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z"/></svg>
-        Agregar
-      </button>
-    </div>
-  </article>
-
-  <article class="card" data-cat="enlatados">
-    <img class="card-img" src="atun.jpg" alt="Atún" loading="lazy">
-    <div class="card-body">
-      <div class="combo-name">Atún</div>
-      <button class="cart-add-btn" data-name="Atún">
-        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12L8.1 13h7.45c.75 0 1.41-.41 1.75-1.03L20.88 5H4.54l-.94-2H1zM17 18c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z"/></svg>
-        Agregar
-      </button>
-    </div>
-  </article>
-
-  <article class="card" data-cat="enlatados">
-    <img class="card-img" src="vita-nueva.jpg" alt="Vita Nueva" loading="lazy">
-    <div class="card-body">
-      <div class="combo-name">Vita Nueva</div>
-      <button class="cart-add-btn" data-name="Vita Nueva">
-        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12L8.1 13h7.45c.75 0 1.41-.41 1.75-1.03L20.88 5H4.54l-.94-2H1zM17 18c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z"/></svg>
-        Agregar
-      </button>
-    </div>
-  </article>
-
-  <article class="card" data-cat="enlatados">
-    <img class="card-img" src="mayonesa-aderezo-bocaditos.jpg" alt="Mayonesa, aderezo, pasta de bocaditos" loading="lazy">
-    <div class="card-body">
-      <div class="combo-name">Mayonesa, Aderezo y Pasta para Bocaditos</div>
-      <button class="cart-add-btn" data-name="Mayonesa, Aderezo y Pasta para Bocaditos">
-        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12L8.1 13h7.45c.75 0 1.41-.41 1.75-1.03L20.88 5H4.54l-.94-2H1zM17 18c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z"/></svg>
-        Agregar
-      </button>
-    </div>
-  </article>
-
-  <article class="card" data-cat="enlatados">
-    <img class="card-img" src="pasta-tomate.jpg" alt="Pasta de tomate" loading="lazy">
-    <div class="card-body">
-      <div class="combo-name">Pasta de Tomate</div>
-      <button class="cart-add-btn" data-name="Pasta de Tomate">
-        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12L8.1 13h7.45c.75 0 1.41-.41 1.75-1.03L20.88 5H4.54l-.94-2H1zM17 18c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z"/></svg>
-        Agregar
-      </button>
-    </div>
-  </article>
-
-  <article class="card" data-cat="enlatados">
-    <img class="card-img" src="spam-lata.jpg" alt="Lata de Spam" loading="lazy">
-    <div class="card-body">
-      <div class="combo-name">Lata de Spam</div>
-      <button class="cart-add-btn" data-name="Lata de Spam">
-        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12L8.1 13h7.45c.75 0 1.41-.41 1.75-1.03L20.88 5H4.54l-.94-2H1zM17 18c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z"/></svg>
-        Agregar
-      </button>
-    </div>
-  </article>
-
-  <article class="card" data-cat="enlatados">
-    <img class="card-img" src="calabaza.jpg" alt="Paquete de papas fritas" loading="lazy">
-    <div class="card-body">
-      <div class="combo-name">Paquete de Papas Fritas</div>
-      <button class="cart-add-btn" data-name="Paquete de Papas Fritas">
-        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12L8.1 13h7.45c.75 0 1.41-.41 1.75-1.03L20.88 5H4.54l-.94-2H1zM17 18c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z"/></svg>
-        Agregar
-      </button>
-    </div>
-  </article>
-
-  <article class="card" data-cat="enlatados">
-    <img class="card-img" src="miel.jpg" alt="Miel" loading="lazy">
-    <div class="card-body">
-      <div class="combo-name">Miel</div>
-      <button class="cart-add-btn" data-name="Miel">
-        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12L8.1 13h7.45c.75 0 1.41-.41 1.75-1.03L20.88 5H4.54l-.94-2H1zM17 18c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z"/></svg>
-        Agregar
-      </button>
-    </div>
-  </article>
-
-  <article class="card" data-cat="bebidas">
-    <img class="card-img" src="caja-refresco-limon.jpg" alt="Caja de Refresco - Limón" loading="lazy">
-    <div class="card-body">
-      <div class="combo-name">Caja de Refresco - Limón</div>
-      <button class="cart-add-btn" data-name="Caja de Refresco - Limón">
-        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12L8.1 13h7.45c.75 0 1.41-.41 1.75-1.03L20.88 5H4.54l-.94-2H1zM17 18c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z"/></svg>
-        Agregar
-      </button>
-    </div>
-  </article>
-
-  <article class="card" data-cat="bebidas">
-    <img class="card-img" src="caja-refresco-naranja.jpg" alt="Caja de Refresco - Naranja" loading="lazy">
-    <div class="card-body">
-      <div class="combo-name">Caja de Refresco - Naranja</div>
-      <button class="cart-add-btn" data-name="Caja de Refresco - Naranja">
-        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12L8.1 13h7.45c.75 0 1.41-.41 1.75-1.03L20.88 5H4.54l-.94-2H1zM17 18c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z"/></svg>
-        Agregar
-      </button>
-    </div>
-  </article>
-
-  <article class="card" data-cat="bebidas">
-    <img class="card-img" src="caja-refresco-cola.jpg" alt="Caja de Refresco - Cola" loading="lazy">
-    <div class="card-body">
-      <div class="combo-name">Caja de Refresco - Cola</div>
-      <button class="cart-add-btn" data-name="Caja de Refresco - Cola">
-        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12L8.1 13h7.45c.75 0 1.41-.41 1.75-1.03L20.88 5H4.54l-.94-2H1zM17 18c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z"/></svg>
-        Agregar
-      </button>
-    </div>
-  </article>
-
-  <article class="card" data-cat="bebidas">
-    <img class="card-img" src="caja-cerveza-cristal.jpg" alt="Caja de Cerveza - Cristal" loading="lazy">
-    <div class="card-body">
-      <div class="combo-name">Caja de Cerveza - Cristal</div>
-      <button class="cart-add-btn" data-name="Caja de Cerveza - Cristal">
-        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12L8.1 13h7.45c.75 0 1.41-.41 1.75-1.03L20.88 5H4.54l-.94-2H1zM17 18c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z"/></svg>
-        Agregar
-      </button>
-    </div>
-  </article>
-
-  <article class="card" data-cat="bebidas">
-    <img class="card-img" src="caja-cerveza-bucanero.jpg" alt="Caja de Cerveza - Bucanero" loading="lazy">
-    <div class="card-body">
-      <div class="combo-name">Caja de Cerveza - Bucanero</div>
-      <button class="cart-add-btn" data-name="Caja de Cerveza - Bucanero">
-        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12L8.1 13h7.45c.75 0 1.41-.41 1.75-1.03L20.88 5H4.54l-.94-2H1zM17 18c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z"/></svg>
-        Agregar
-      </button>
-    </div>
-  </article>
-
-  <article class="card" data-cat="bebidas">
-    <img class="card-img" src="caja-malta-bucanero.jpg" alt="Caja de Malta - Bucanero" loading="lazy">
-    <div class="card-body">
-      <div class="combo-name">Caja de Malta - Bucanero</div>
-      <button class="cart-add-btn" data-name="Caja de Malta - Bucanero">
-        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12L8.1 13h7.45c.75 0 1.41-.41 1.75-1.03L20.88 5H4.54l-.94-2H1zM17 18c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z"/></svg>
-        Agregar
-      </button>
-    </div>
-  </article>
-
-  <article class="card" data-cat="confituras">
-    <img class="card-img" src="cakes.jpg" alt="Cakes" loading="lazy">
-    <div class="card-body">
-      <div class="combo-name">Cakes</div>
-      <button class="cart-add-btn" data-name="Cakes">
-        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12L8.1 13h7.45c.75 0 1.41-.41 1.75-1.03L20.88 5H4.54l-.94-2H1zM17 18c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z"/></svg>
-        Agregar
-      </button>
-    </div>
-  </article>
-
-  <article class="card" data-cat="carnicos">
-    <img class="card-img" src="carne-res.jpg" alt="Carne de res" loading="lazy">
-    <div class="card-body">
-      <div class="combo-name">Carne de res</div>
-      <button class="cart-add-btn" data-name="Carne de res">
-        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12L8.1 13h7.45c.75 0 1.41-.41 1.75-1.03L20.88 5H4.54l-.94-2H1zM17 18c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z"/></svg>
-        Agregar
-      </button>
-    </div>
-  </article>
-
-  <article class="card" data-cat="carnicos">
-    <img class="card-img" src="carne-carnero.jpg" alt="Carne de carnero" loading="lazy">
-    <div class="card-body">
-      <div class="combo-name">Carne de carnero</div>
-      <button class="cart-add-btn" data-name="Carne de carnero">
-        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12L8.1 13h7.45c.75 0 1.41-.41 1.75-1.03L20.88 5H4.54l-.94-2H1zM17 18c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z"/></svg>
-        Agregar
-      </button>
-    </div>
-  </article>
-
-  <article class="card" data-cat="carnicos">
-    <img class="card-img" src="mortadela.jpg" alt="Mortadela" loading="lazy">
-    <div class="card-body">
-      <div class="combo-name">Mortadela</div>
-      <button class="cart-add-btn" data-name="Mortadela">
-        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12L8.1 13h7.45c.75 0 1.41-.41 1.75-1.03L20.88 5H4.54l-.94-2H1zM17 18c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z"/></svg>
-        Agregar
-      </button>
-    </div>
-  </article>
-
-  <article class="card" data-cat="carnicos">
-    <img class="card-img" src="jamonada.jpg" alt="Jamonada" loading="lazy">
-    <div class="card-body">
-      <div class="combo-name">Jamonada</div>
-      <button class="cart-add-btn" data-name="Jamonada">
-        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12L8.1 13h7.45c.75 0 1.41-.41 1.75-1.03L20.88 5H4.54l-.94-2H1zM17 18c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z"/></svg>
-        Agregar
-      </button>
-    </div>
-  </article>
-
-  <article class="card" data-cat="carnicos">
-    <img class="card-img" src="chorizo.jpg" alt="Chorizo" loading="lazy">
-    <div class="card-body">
-      <div class="combo-name">Chorizo</div>
-      <button class="cart-add-btn" data-name="Chorizo">
-        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12L8.1 13h7.45c.75 0 1.41-.41 1.75-1.03L20.88 5H4.54l-.94-2H1zM17 18c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z"/></svg>
-        Agregar
-      </button>
-    </div>
-  </article>
-
-  <article class="card" data-cat="carnicos">
-    <img class="card-img" src="spam.jpg" alt="Spam" loading="lazy">
-    <div class="card-body">
-      <div class="combo-name">Spam</div>
-      <button class="cart-add-btn" data-name="Spam">
-        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12L8.1 13h7.45c.75 0 1.41-.41 1.75-1.03L20.88 5H4.54l-.94-2H1zM17 18c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z"/></svg>
-        Agregar
-      </button>
-    </div>
-  </article>
-
-  <article class="card" data-cat="bebidas">
-    <img class="card-img" src="malta-guajira.jpg" alt="Botella de Malta Guajira" loading="lazy">
-    <div class="card-body">
-      <div class="combo-name">Botella de Malta Guajira</div>
-      <button class="cart-add-btn" data-name="Botella de Malta Guajira">
-        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12L8.1 13h7.45c.75 0 1.41-.41 1.75-1.03L20.88 5H4.54l-.94-2H1zM17 18c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z"/></svg>
-        Agregar
-      </button>
-    </div>
-  </article>
-
-  <article class="card" data-cat="bebidas">
-    <img class="card-img" src="cerveza-importada.jpg" alt="Cerveza Importada" loading="lazy">
-    <div class="card-body">
-      <div class="combo-name">Cerveza Importada</div>
-      <button class="cart-add-btn" data-name="Cerveza Importada">
-        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12L8.1 13h7.45c.75 0 1.41-.41 1.75-1.03L20.88 5H4.54l-.94-2H1zM17 18c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z"/></svg>
-        Agregar
-      </button>
-    </div>
-  </article>
-
-  <article class="card" data-cat="confituras">
-    <img class="card-img" src="galletas-saladas.jpg" alt="Galletas Saladas y Semi Dulces" loading="lazy">
-    <div class="card-body">
-      <div class="combo-name">Galletas Saladas y Semi Dulces</div>
-      <button class="cart-add-btn" data-name="Galletas Saladas y Semi Dulces">
-        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12L8.1 13h7.45c.75 0 1.41-.41 1.75-1.03L20.88 5H4.54l-.94-2H1zM17 18c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z"/></svg>
-        Agregar
-      </button>
-    </div>
-  </article>
-
-  <article class="card" data-cat="aseo">
-    <img class="card-img" src="detergente-liquido.jpg" alt="Detergente Líquido" loading="lazy">
-    <div class="card-body">
-      <div class="combo-name">Detergente Líquido</div>
-      <button class="cart-add-btn" data-name="Detergente Líquido">
-        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12L8.1 13h7.45c.75 0 1.41-.41 1.75-1.03L20.88 5H4.54l-.94-2H1zM17 18c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z"/></svg>
-        Agregar
-      </button>
-    </div>
-  </article>
-
-  <article class="card" data-cat="aseo">
-    <img class="card-img" src="detergente-polvo.jpg" alt="Detergente en Polvo" loading="lazy">
-    <div class="card-body">
-      <div class="combo-name">Detergente en Polvo</div>
-      <button class="cart-add-btn" data-name="Detergente en Polvo">
-        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12L8.1 13h7.45c.75 0 1.41-.41 1.75-1.03L20.88 5H4.54l-.94-2H1zM17 18c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z"/></svg>
-        Agregar
-      </button>
-    </div>
-  </article>
-
-  <article class="card" data-cat="aseo">
-    <img class="card-img" src="jabon-lavar.jpg" alt="Jabón de Lavar" loading="lazy">
-    <div class="card-body">
-      <div class="combo-name">Jabón de Lavar</div>
-      <button class="cart-add-btn" data-name="Jabón de Lavar">
-        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12L8.1 13h7.45c.75 0 1.41-.41 1.75-1.03L20.88 5H4.54l-.94-2H1zM17 18c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z"/></svg>
-        Agregar
-      </button>
-    </div>
-  </article>
-
-  <article class="card" data-cat="aseo">
-    <img class="card-img" src="jabon-bano.jpg" alt="Jabón de Baño" loading="lazy">
-    <div class="card-body">
-      <div class="combo-name">Jabón de Baño</div>
-      <button class="cart-add-btn" data-name="Jabón de Baño">
-        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12L8.1 13h7.45c.75 0 1.41-.41 1.75-1.03L20.88 5H4.54l-.94-2H1zM17 18c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z"/></svg>
-        Agregar
-      </button>
-    </div>
-  </article>
-
-  <article class="card" data-cat="aseo">
-    <img class="card-img" src="pasta-dental.jpg" alt="Pasta Dental" loading="lazy">
-    <div class="card-body">
-      <div class="combo-name">Pasta Dental</div>
-      <button class="cart-add-btn" data-name="Pasta Dental">
-        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12L8.1 13h7.45c.75 0 1.41-.41 1.75-1.03L20.88 5H4.54l-.94-2H1zM17 18c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z"/></svg>
-        Agregar
-      </button>
-    </div>
-  </article>
-
-  <article class="card" data-cat="aseo">
-    <img class="card-img" src="desodorante.jpg" alt="Desodorante" loading="lazy">
-    <div class="card-body">
-      <div class="combo-name">Desodorante</div>
-      <button class="cart-add-btn" data-name="Desodorante">
-        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12L8.1 13h7.45c.75 0 1.41-.41 1.75-1.03L20.88 5H4.54l-.94-2H1zM17 18c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z"/></svg>
-        Agregar
-      </button>
-    </div>
-  </article>
-
-  <article class="card" data-cat="aseo">
-    <img class="card-img" src="colonias.jpg" alt="Colonias" loading="lazy">
-    <div class="card-body">
-      <div class="combo-name">Colonias</div>
-      <button class="cart-add-btn" data-name="Colonias">
-        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12L8.1 13h7.45c.75 0 1.41-.41 1.75-1.03L20.88 5H4.54l-.94-2H1zM17 18c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z"/></svg>
-        Agregar
-      </button>
-    </div>
-  </article>
-
-  <article class="card" data-cat="aseo">
-    <img class="card-img" src="cremas-piel.jpg" alt="Cremas para la piel" loading="lazy">
-    <div class="card-body">
-      <div class="combo-name">Cremas para la Piel</div>
-      <button class="cart-add-btn" data-name="Cremas para la Piel">
-        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12L8.1 13h7.45c.75 0 1.41-.41 1.75-1.03L20.88 5H4.54l-.94-2H1zM17 18c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z"/></svg>
-        Agregar
-      </button>
-    </div>
-  </article>
-
-  <article class="card" data-cat="aseo">
-    <img class="card-img" src="papel-sanitario.jpg" alt="Papel sanitario" loading="lazy">
-    <div class="card-body">
-      <div class="combo-name">Papel Sanitario</div>
-      <button class="cart-add-btn" data-name="Papel Sanitario">
-        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12L8.1 13h7.45c.75 0 1.41-.41 1.75-1.03L20.88 5H4.54l-.94-2H1zM17 18c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z"/></svg>
-        Agregar
-      </button>
-    </div>
-  </article>
-
-  <article class="card" data-cat="aseo">
-    <img class="card-img" src="espuma-afeitar.jpg" alt="Espuma de afeitar" loading="lazy">
-    <div class="card-body">
-      <div class="combo-name">Espuma de Afeitar</div>
-      <button class="cart-add-btn" data-name="Espuma de Afeitar">
-        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12L8.1 13h7.45c.75 0 1.41-.41 1.75-1.03L20.88 5H4.54l-.94-2H1zM17 18c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z"/></svg>
-        Agregar
-      </button>
-    </div>
-  </article>
-
-  <article class="card" data-cat="aseo">
-    <img class="card-img" src="maquinas-afeitar.jpg" alt="Máquinas de afeitar" loading="lazy">
-    <div class="card-body">
-      <div class="combo-name">Máquinas de Afeitar</div>
-      <button class="cart-add-btn" data-name="Máquinas de Afeitar">
-        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12L8.1 13h7.45c.75 0 1.41-.41 1.75-1.03L20.88 5H4.54l-.94-2H1zM17 18c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z"/></svg>
-        Agregar
-      </button>
-    </div>
-  </article>
-
-  <article class="card" data-cat="aseo">
-    <img class="card-img" src="champu-acondicionador.jpg" alt="Champú y acondicionador" loading="lazy">
-    <div class="card-body">
-      <div class="combo-name">Champú y Acondicionador</div>
-      <button class="cart-add-btn" data-name="Champú y Acondicionador">
-        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12L8.1 13h7.45c.75 0 1.41-.41 1.75-1.03L20.88 5H4.54l-.94-2H1zM17 18c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z"/></svg>
-        Agregar
-      </button>
-    </div>
-  </article>
-
-  <article class="card" data-cat="confituras">
-    <img class="card-img" src="galletas-dulces.jpg" alt="Galletas Dulces" loading="lazy">
-    <div class="card-body">
-      <div class="combo-name">Galletas Dulces</div>
-      <button class="cart-add-btn" data-name="Galletas Dulces">
-        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12L8.1 13h7.45c.75 0 1.41-.41 1.75-1.03L20.88 5H4.54l-.94-2H1zM17 18c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z"/></svg>
-        Agregar
-      </button>
-    </div>
-  </article>
-
-  <article class="card" data-cat="confituras">
-    <img class="card-img" src="sorbetos.jpg" alt="Sorbetos" loading="lazy">
-    <div class="card-body">
-      <div class="combo-name">Sorbetos</div>
-      <button class="cart-add-btn" data-name="Sorbetos">
-        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12L8.1 13h7.45c.75 0 1.41-.41 1.75-1.03L20.88 5H4.54l-.94-2H1zM17 18c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z"/></svg>
-        Agregar
-      </button>
-    </div>
-  </article>
-
-  <article class="card" data-cat="confituras">
-    <img class="card-img" src="pelly.jpg" alt="Pelly" loading="lazy">
-    <div class="card-body">
-      <div class="combo-name">Pelly</div>
-      <button class="cart-add-btn" data-name="Pelly">
-        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12L8.1 13h7.45c.75 0 1.41-.41 1.75-1.03L20.88 5H4.54l-.94-2H1zM17 18c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z"/></svg>
-        Agregar
-      </button>
-    </div>
-  </article>
-
-  <article class="card" data-cat="confituras">
-    <img class="card-img" src="leche-condensada.jpg" alt="Leche condensada" loading="lazy">
-    <div class="card-body">
-      <div class="combo-name">Leche Condensada</div>
-      <button class="cart-add-btn" data-name="Leche Condensada">
-        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12L8.1 13h7.45c.75 0 1.41-.41 1.75-1.03L20.88 5H4.54l-.94-2H1zM17 18c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z"/></svg>
-        Agregar
-      </button>
-    </div>
-  </article>
-
-  <article class="card" data-cat="confituras">
-    <img class="card-img" src="crema-chocolate.jpg" alt="Crema de chocolate" loading="lazy">
-    <div class="card-body">
-      <div class="combo-name">Crema de Chocolate</div>
-      <button class="cart-add-btn" data-name="Crema de Chocolate">
-        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12L8.1 13h7.45c.75 0 1.41-.41 1.75-1.03L20.88 5H4.54l-.94-2H1zM17 18c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z"/></svg>
-        Agregar
-      </button>
-    </div>
-  </article>
-
-  <article class="card" data-cat="confituras">
-    <img class="card-img" src="petel-chocolate.jpg" alt="Petel de chocolate" loading="lazy">
-    <div class="card-body">
-      <div class="combo-name">Petel de Chocolate</div>
-      <button class="cart-add-btn" data-name="Petel de Chocolate">
-        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12L8.1 13h7.45c.75 0 1.41-.41 1.75-1.03L20.88 5H4.54l-.94-2H1zM17 18c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z"/></svg>
-        Agregar
-      </button>
-    </div>
-  </article>
-
-
-    <div class="card-body">
-      <div class="combo-name">Chupa Chups</div>
-      <button class="cart-add-btn" data-name="Chupa Chups">
-        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12L8.1 13h7.45c.75 0 1.41-.41 1.75-1.03L20.88 5H4.54l-.94-2H1zM17 18c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z"/></svg>
-        Agregar
-      </button>
-    </div>
-  </article>
-
-  <article class="card" data-cat="confituras">
-    <img class="card-img" src="yogurt.jpg" alt="Yogurt" loading="lazy">
-    <div class="card-body">
-      <div class="combo-name">Yogurt</div>
-      <button class="cart-add-btn" data-name="Yogurt">
-        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12L8.1 13h7.45c.75 0 1.41-.41 1.75-1.03L20.88 5H4.54l-.94-2H1zM17 18c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z"/></svg>
-        Agregar
-      </button>
-    </div>
-  </article>
-
-  <article class="card" data-cat="confituras">
-    <img class="card-img" src="leche-en-polvo.jpg" alt="Leche en polvo" loading="lazy">
-    <div class="card-body">
-      <div class="combo-name">Leche en Polvo</div>
-      <button class="cart-add-btn" data-name="Leche en Polvo (Confituras)">
-        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12L8.1 13h7.45c.75 0 1.41-.41 1.75-1.03L20.88 5H4.54l-.94-2H1zM17 18c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z"/></svg>
-        Agregar
-      </button>
-    </div>
-  </article>
-
-  <article class="card" data-cat="enlatados">
-    <img class="card-img" src="mantequilla.jpg" alt="Mantequilla" loading="lazy">
-    <div class="card-body">
-      <div class="combo-name">Mantequilla</div>
-      <button class="cart-add-btn" data-name="Mantequilla">
-        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12L8.1 13h7.45c.75 0 1.41-.41 1.75-1.03L20.88 5H4.54l-.94-2H1zM17 18c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z"/></svg>
-        Agregar
-      </button>
-    </div>
-  </article>
-
-  <article class="card" data-cat="bebidas">
-    <img class="card-img" src="jugos-lata.jpg" alt="Jugos de lata" loading="lazy">
-    <div class="card-body">
-      <div class="combo-name">Jugos de lata</div>
-      <button class="cart-add-btn" data-name="Jugos de lata">
-        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12L8.1 13h7.45c.75 0 1.41-.41 1.75-1.03L20.88 5H4.54l-.94-2H1zM17 18c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z"/></svg>
-        Agregar
-      </button>
-    </div>
-  </article>
-
-  <article class="card" data-cat="bebidas">
-    <img class="card-img" src="jugo-caja.jpg" alt="Jugo de caja" loading="lazy">
-    <div class="card-body">
-      <div class="combo-name">Jugo de caja</div>
-      <button class="cart-add-btn" data-name="Jugo de caja">
-        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12L8.1 13h7.45c.75 0 1.41-.41 1.75-1.03L20.88 5H4.54l-.94-2H1zM17 18c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z"/></svg>
-        Agregar
-      </button>
-    </div>
-  </article>
-
-  <article class="card" data-cat="carnicos">
-    <img class="card-img" src="chicharrones-manteca.jpg" alt="Cubeta de chicharrones de cerdo rellenas de manteca de cerdo" loading="lazy">
-    <div class="card-body">
-      <div class="combo-name">Cubeta de Chicharrones de Cerdo Rellenas de Manteca</div>
-      <button class="cart-add-btn" data-name="Cubeta de Chicharrones de Cerdo Rellenas de Manteca">
-        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12L8.1 13h7.45c.75 0 1.41-.41 1.75-1.03L20.88 5H4.54l-.94-2H1zM17 18c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z"/></svg>
-        Agregar
-      </button>
-    </div>
-  </article>
-
-  <article class="card" data-cat="carnicos">
-    <img class="card-img" src="masas-manteca.jpg" alt="Cubeta de masas de cerdo rellenas de manteca de cerdo" loading="lazy">
-    <div class="card-body">
-      <div class="combo-name">Cubeta de Masas de Cerdo Rellenas de Manteca</div>
-      <button class="cart-add-btn" data-name="Cubeta de Masas de Cerdo Rellenas de Manteca">
-        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12L8.1 13h7.45c.75 0 1.41-.41 1.75-1.03L20.88 5H4.54l-.94-2H1zM17 18c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z"/></svg>
-        Agregar
-      </button>
-    </div>
-  </article>
-
-  <article class="card" data-cat="granos">
-    <img class="card-img" src="garbanzos.jpg" alt="Garbanzos" loading="lazy">
-    <div class="card-body">
-      <div class="combo-name">Garbanzos</div>
-      <button class="cart-add-btn" data-name="Garbanzos">
-        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12L8.1 13h7.45c.75 0 1.41-.41 1.75-1.03L20.88 5H4.54l-.94-2H1zM17 18c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z"/></svg>
-        Agregar
-      </button>
-    </div>
-  </article>
-
-  <article class="card" data-cat="granos">
-    <img class="card-img" src="frijoles-blancos.jpg" alt="Frijoles blancos" loading="lazy">
-    <div class="card-body">
-      <div class="combo-name">Frijoles blancos</div>
-      <button class="cart-add-btn" data-name="Frijoles blancos">
-        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12L8.1 13h7.45c.75 0 1.41-.41 1.75-1.03L20.88 5H4.54l-.94-2H1zM17 18c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z"/></svg>
-        Agregar
-      </button>
-    </div>
-  </article>
-
-  <article class="card" data-cat="granos">
-    <img class="card-img" src="azucar-morena.jpg" alt="Azúcar morena" loading="lazy">
-    <div class="card-body">
-      <div class="combo-name">Azúcar Morena</div>
-      <button class="cart-add-btn" data-name="Azúcar Morena">
-        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12L8.1 13h7.45c.75 0 1.41-.41 1.75-1.03L20.88 5H4.54l-.94-2H1zM17 18c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z"/></svg>
-        Agregar
-      </button>
-    </div>
-  </article>
-
-  <article class="card" data-cat="granos">
-    <img class="card-img" src="azucar-blanca.jpg" alt="Azúcar blanca" loading="lazy">
-    <div class="card-body">
-      <div class="combo-name">Azúcar Blanca</div>
-      <button class="cart-add-btn" data-name="Azúcar Blanca">
-        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12L8.1 13h7.45c.75 0 1.41-.41 1.75-1.03L20.88 5H4.54l-.94-2H1zM17 18c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z"/></svg>
-        Agregar
-      </button>
-    </div>
-  </article>
-
-  <article class="card" data-cat="electricos">
-    <img class="card-img" src="ecoflow.jpg" alt="Ecoflow" loading="lazy">
-    <div class="card-body">
-      <div class="combo-name">Ecoflow</div>
-      <button class="cart-add-btn" data-name="Ecoflow">
-        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12L8.1 13h7.45c.75 0 1.41-.41 1.75-1.03L20.88 5H4.54l-.94-2H1zM17 18c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z"/></svg>
-        Agregar
-      </button>
-    </div>
-  </article>
-
-  <article class="card" data-cat="electricos">
-    <img class="card-img" src="gas.jpg" alt="Gas" loading="lazy">
-    <div class="card-body">
-      <div class="combo-name">Gas</div>
-      <button class="cart-add-btn" data-name="Gas">
-        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12L8.1 13h7.45c.75 0 1.41-.41 1.75-1.03L20.88 5H4.54l-.94-2H1zM17 18c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z"/></svg>
-        Agregar
-      </button>
-    </div>
-  </article>
-
-  <article class="card" data-cat="electricos">
-    <img class="card-img" src="lamparas-solares.jpg" alt="Lámparas solares" loading="lazy">
-    <div class="card-body">
-      <div class="combo-name">Lámparas Solares</div>
-      <button class="cart-add-btn" data-name="Lámparas Solares">
-        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12L8.1 13h7.45c.75 0 1.41-.41 1.75-1.03L20.88 5H4.54l-.94-2H1zM17 18c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z"/></svg>
-        Agregar
-      </button>
-    </div>
-  </article>
-
-  <article class="card" data-cat="electricos">
-    <img class="card-img" src="ventiladores-recargables.jpg" alt="Ventiladores recargables" loading="lazy">
-    <div class="card-body">
-      <div class="combo-name">Ventiladores Recargables</div>
-      <button class="cart-add-btn" data-name="Ventiladores Recargables">
-        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12L8.1 13h7.45c.75 0 1.41-.41 1.75-1.03L20.88 5H4.54l-.94-2H1zM17 18c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z"/></svg>
-        Agregar
-      </button>
-    </div>
-  </article>
-
-  <article class="card" data-cat="electricos">
-    <img class="card-img" src="nevera.jpg" alt="Nevera" loading="lazy">
-    <div class="card-body">
-      <div class="combo-name">Nevera</div>
-      <button class="cart-add-btn" data-name="Nevera">
-        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12L8.1 13h7.45c.75 0 1.41-.41 1.75-1.03L20.88 5H4.54l-.94-2H1zM17 18c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z"/></svg>
-        Agregar
-      </button>
-    </div>
-  </article>
-
-  <article class="card" data-cat="electricos">
-    <img class="card-img" src="refrigerador.jpg" alt="Refrigerador" loading="lazy">
-    <div class="card-body">
-      <div class="combo-name">Refrigerador</div>
-      <button class="cart-add-btn" data-name="Refrigerador">
-        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12L8.1 13h7.45c.75 0 1.41-.41 1.75-1.03L20.88 5H4.54l-.94-2H1zM17 18c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z"/></svg>
-        Agregar
-      </button>
-    </div>
-  </article>
-
-  <article class="card" data-cat="electricos">
-    <img class="card-img" src="lavadora.jpg" alt="Lavadora" loading="lazy">
-    <div class="card-body">
-      <div class="combo-name">Lavadora</div>
-      <button class="cart-add-btn" data-name="Lavadora">
-        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12L8.1 13h7.45c.75 0 1.41-.41 1.75-1.03L20.88 5H4.54l-.94-2H1zM17 18c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z"/></svg>
-        Agregar
-      </button>
-    </div>
-  </article>
-
-  <article class="card" data-cat="electricos">
-    <img class="card-img" src="linternas.jpg" alt="Linternas" loading="lazy">
-    <div class="card-body">
-      <div class="combo-name">Linternas</div>
-      <button class="cart-add-btn" data-name="Linternas">
-        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12L8.1 13h7.45c.75 0 1.41-.41 1.75-1.03L20.88 5H4.54l-.94-2H1zM17 18c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z"/></svg>
-        Agregar
-      </button>
-    </div>
-  </article>
-
-  <article class="card" data-cat="frutas-vegetales">
-    <img class="card-img" src="papas.jpg" alt="Papas" loading="lazy">
-    <div class="card-body">
-      <div class="combo-name">Papas</div>
-      <button class="cart-add-btn" data-name="Papas">
-        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12L8.1 13h7.45c.75 0 1.41-.41 1.75-1.03L20.88 5H4.54l-.94-2H1zM17 18c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z"/></svg>
-        Agregar
-      </button>
-    </div>
-  </article>
-
-  <article class="card" data-cat="frutas-vegetales">
-    <img class="card-img" src="papas-fritas.jpg" alt="Calabaza" loading="lazy">
-    <div class="card-body">
-      <div class="combo-name">Calabaza</div>
-      <button class="cart-add-btn" data-name="Calabaza">
-        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12L8.1 13h7.45c.75 0 1.41-.41 1.75-1.03L20.88 5H4.54l-.94-2H1zM17 18c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z"/></svg>
-        Agregar
-      </button>
-    </div>
-  </article>
-
-  <article class="card" data-cat="frutas-vegetales">
-    <img class="card-img" src="malanga.jpg" alt="Malanga" loading="lazy">
-    <div class="card-body">
-      <div class="combo-name">Malanga</div>
-      <button class="cart-add-btn" data-name="Malanga">
-        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12L8.1 13h7.45c.75 0 1.41-.41 1.75-1.03L20.88 5H4.54l-.94-2H1zM17 18c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z"/></svg>
-        Agregar
-      </button>
-    </div>
-  </article>
-
-  <article class="card" data-cat="frutas-vegetales">
-    <img class="card-img" src="yuca.jpg" alt="Yuca" loading="lazy">
-    <div class="card-body">
-      <div class="combo-name">Yuca</div>
-      <button class="cart-add-btn" data-name="Yuca">
-        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12L8.1 13h7.45c.75 0 1.41-.41 1.75-1.03L20.88 5H4.54l-.94-2H1zM17 18c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z"/></svg>
-        Agregar
-      </button>
-    </div>
-  </article>
-
-  <article class="card" data-cat="frutas-vegetales">
-    <img class="card-img" src="boniato.jpg" alt="Boniato" loading="lazy">
-    <div class="card-body">
-      <div class="combo-name">Boniato</div>
-      <button class="cart-add-btn" data-name="Boniato">
-        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12L8.1 13h7.45c.75 0 1.41-.41 1.75-1.03L20.88 5H4.54l-.94-2H1zM17 18c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z"/></svg>
-        Agregar
-      </button>
-    </div>
-  </article>
-
-  <article class="card" data-cat="frutas-vegetales">
-    <img class="card-img" src="platanos-fruta.jpg" alt="Plátanos de fruta" loading="lazy">
-    <div class="card-body">
-      <div class="combo-name">Plátanos de Fruta</div>
-      <button class="cart-add-btn" data-name="Plátanos de Fruta">
-        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12L8.1 13h7.45c.75 0 1.41-.41 1.75-1.03L20.88 5H4.54l-.94-2H1zM17 18c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z"/></svg>
-        Agregar
-      </button>
-    </div>
-  </article>
-
-  <article class="card" data-cat="frutas-vegetales">
-    <img class="card-img" src="platano-burro.jpg" alt="Plátano Burro" loading="lazy">
-    <div class="card-body">
-      <div class="combo-name">Plátano Burro</div>
-      <button class="cart-add-btn" data-name="Plátano Burro">
-        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12L8.1 13h7.45c.75 0 1.41-.41 1.75-1.03L20.88 5H4.54l-.94-2H1zM17 18c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z"/></svg>
-        Agregar
-      </button>
-    </div>
-  </article>
-
-  <article class="card" data-cat="frutas-vegetales">
-    <img class="card-img" src="manzanas.jpg" alt="Manzanas" loading="lazy">
-    <div class="card-body">
-      <div class="combo-name">Manzanas</div>
-      <button class="cart-add-btn" data-name="Manzanas">
-        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12L8.1 13h7.45c.75 0 1.41-.41 1.75-1.03L20.88 5H4.54l-.94-2H1zM17 18c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z"/></svg>
-        Agregar
-      </button>
-    </div>
-  </article>
-</main>
-
-<footer>
-  <p>THE CENTER MARKESHOP &middot; PAGO POR ZELLE DESDE EE.UU. &middot; ENTREGA A DOMICILIO EN CUBA</p>
-</footer>
-
-<div class="lightbox-overlay" id="lightboxOverlay">
-  <button class="lightbox-close" id="lightboxClose">&times;</button>
-  <img id="lightboxImg" src="" alt="">
-</div>
-
-<button class="cart-fab" id="cartFab">
-  <svg viewBox="0 0 24 24" ><path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12L8.1 13h7.45c.75 0 1.41-.41 1.75-1.03L20.88 5H4.54l-.94-2H1zM17 18c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z"/></svg>
-  <span class="cart-badge" id="cartBadge" style="display:none;">0</span>
-</button>
-
-<div class="cart-overlay" id="cartOverlay">
-  <div class="cart-panel">
-    <div class="cart-header">
-      <h3>Tu Combo</h3>
-      <button class="cart-close" id="cartClose">&times;</button>
-    </div>
-    <div class="cart-items" id="cartItems"></div>
-    <div class="cart-footer">
-      <div class="cart-total"><span>Artículos seleccionados</span><span id="cartCount">0</span></div>
-      <p class="cart-note">Al enviar, te confirmamos los precios por WhatsApp y armamos tu pedido final.</p>
-      <a class="cart-send-btn" id="cartSend" href="#" target="_blank">
-        <svg viewBox="0 0 24 24"><path d="M17.6 6.3C16.1 4.8 14.1 4 12 4c-4.4 0-8 3.6-8 8 0 1.4.4 2.8 1.1 4L4 20l4-1.1c1.2.6 2.5 1 3.9 1h.1c4.4 0 8-3.6 8-8 0-2.1-.8-4.1-2.4-5.6zm-5.6 12.3h-.1c-1.2 0-2.4-.3-3.4-.9l-.2-.1-2.5.7.7-2.4-.2-.3c-.7-1.1-1-2.3-1-3.6 0-3.6 2.9-6.5 6.5-6.5 1.7 0 3.4.7 4.6 1.9 1.2 1.2 1.9 2.9 1.9 4.6.1 3.6-2.8 6.6-6.3 6.6zm3.5-4.9c-.2-.1-1.2-.6-1.3-.6-.2-.1-.3-.1-.4.1-.1.2-.5.6-.6.7-.1.1-.2.1-.4 0-.2-.1-.9-.3-1.6-1-.6-.5-1-1.2-1.1-1.4-.1-.2 0-.3.1-.4.1-.1.2-.2.3-.4.1-.1.1-.2.2-.3.1-.1 0-.3 0-.4-.1-.1-.4-1-.6-1.4-.1-.4-.3-.3-.4-.3h-.4c-.1 0-.3.1-.5.2-.2.2-.7.6-.7 1.5 0 .9.7 1.8.8 1.9.1.1 1.4 2.1 3.3 3 .5.2.8.3 1.1.4.5.1.9.1 1.2.1.4-.1 1.2-.5 1.3-.9.2-.5.2-.9.1-1z"/></svg>
-        Enviar selección por WhatsApp
-      </a>
-    </div>
+  <header>
+    <h1>The Center Markeshop</h1>
+  </header>
+
+  <!-- Pestañas de categorías -->
+  <div class="categorias">
+    <button class="btn-cat activo" onclick="filtrarCategoria('frutas', this)">Frutas</button>
   </div>
-</div>
 
-<script>
-  // ⚠️ CONFIGURACIÓN — tu número de WhatsApp
-  const WHATSAPP_NUMBER = "5358127153";
+  <main class="contenedor">
+    <div class="grid-productos" id="grid-productos"></div>
+  </main>
 
-  /* ===== CARRITO ===== */
-  let cart = []; // {key, name, qty}
+  <!-- Botón de Pedido por WhatsApp -->
+  <div class="carrito-flotante" onclick="enviarWhatsApp()">
+    🛒 Ver Pedido (<span id="contador-carrito">0</span>)
+  </div>
 
-  function addToCart(name, qty){
-    qty = Number(qty) || 1;
-    const existing = cart.find(i => i.key === name);
-    if(existing){
-      existing.qty += qty;
-    } else {
-      cart.push({key:name, name, qty});
-    }
-    renderCart();
-    flashBadge();
-  }
+  <script>
+    // Arreglo de productos actualizado con la pestaña de frutas
+    const productos = [
+      { id: "limon", nombre: "Limón", categoria: "frutas", imagen: "limon.png" },
+      { id: "agua-de-coco", nombre: "Agua de coco", categoria: "frutas", imagen: "agua-de-coco.png" },
+      { id: "fruta-bomba", nombre: "Fruta bomba", categoria: "frutas", imagen: "fruta-bomba.png" },
+      { id: "pina", nombre: "Piña", categoria: "frutas", imagen: "pina.png" },
+      { id: "mangos", nombre: "Mangos", categoria: "frutas", imagen: "mangos.png" },
+      { id: "guayabas", nombre: "Guayabas", categoria: "frutas", imagen: "guayabas.png" },
+      { id: "naranjas", nombre: "Naranjas", categoria: "frutas", imagen: "naranjas.png" }
+    ];
 
-  function flashBadge(){
-    const badge = document.getElementById('cartBadge');
-    badge.style.transform = 'scale(1.3)';
-    setTimeout(()=> badge.style.transform = 'scale(1)', 150);
-  }
+    let carrito = [];
 
-  function renderCart(){
-    const itemsEl = document.getElementById('cartItems');
-    const countEl = document.getElementById('cartCount');
-    const badge = document.getElementById('cartBadge');
-    const sendBtn = document.getElementById('cartSend');
+    function renderizarProductos(categoria) {
+      const grid = document.getElementById("grid-productos");
+      grid.innerHTML = "";
 
-    itemsEl.innerHTML = '';
-    if(cart.length === 0){
-      itemsEl.innerHTML = '<div class="cart-empty">Aún no has agregado artículos. Toca "Agregar" en lo que te interese.</div>';
-    }
-    let count = 0;
-    cart.forEach((item, idx)=>{
-      count += item.qty;
-      const line = document.createElement('div');
-      line.className = 'cart-line';
-      line.innerHTML = `
-        <div class="cart-line-name">${item.name}</div>
-        <div class="cart-line-controls">
-          <div class="qty-stepper">
-            <button data-cart-step="-1" data-idx="${idx}">−</button>
-            <span>${item.qty}</span>
-            <button data-cart-step="1" data-idx="${idx}">+</button>
-          </div>
-          <button class="cart-line-remove" data-cart-remove="${idx}">✕</button>
-        </div>
-      `;
-      itemsEl.appendChild(line);
-    });
+      const filtrados = productos.filter(p => p.categoria === categoria);
 
-    countEl.textContent = count;
-    if(count > 0){
-      badge.style.display = 'flex';
-      badge.textContent = count;
-    } else {
-      badge.style.display = 'none';
-    }
-    sendBtn.style.pointerEvents = count > 0 ? 'auto' : 'none';
-    sendBtn.style.opacity = count > 0 ? '1' : '0.4';
-
-    if(count > 0){
-      let msg = 'Hola, quiero armar este combo:\n';
-      cart.forEach(item=>{
-        msg += `- ${item.name} x${item.qty}\n`;
+      filtrados.forEach(prod => {
+        const tarjeta = document.createElement("div");
+        tarjeta.className = "tarjeta-producto";
+        tarjeta.innerHTML = `
+          <img src="${prod.imagen}" alt="${prod.nombre}">
+          <h3>${prod.nombre}</h3>
+          <button class="btn-agregar" onclick="agregarAlCarrito('${prod.id}')">Añadir al carrito</button>
+        `;
+        grid.appendChild(tarjeta);
       });
-      msg += 'Me gustaría conocer los precios y confirmar el pedido, por favor.';
-      sendBtn.href = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(msg)}`;
-      sendBtn.target = '_blank';
     }
 
-    itemsEl.querySelectorAll('[data-cart-step]').forEach(btn=>{
-      btn.addEventListener('click', ()=>{
-        const idx = Number(btn.dataset.idx);
-        const step = Number(btn.dataset.cartStep);
-        cart[idx].qty += step;
-        if(cart[idx].qty <= 0) cart.splice(idx,1);
-        renderCart();
+    function filtrarCategoria(cat, elemento) {
+      document.querySelectorAll(".btn-cat").forEach(b => b.classList.remove("activo"));
+      elemento.classList.add("activo");
+      renderizarProductos(cat);
+    }
+
+    function agregarAlCarrito(id) {
+      const prod = productos.find(p => p.id === id);
+      carrito.push(prod);
+      document.getElementById("contador-carrito").innerText = carrito.length;
+    }
+
+    function enviarWhatsApp() {
+      if (carrito.length === 0) {
+        alert("El carrito está vacío.");
+        return;
+      }
+
+      let mensaje = "¡Hola! Quisiera realizar el siguiente pedido:\n\n";
+      carrito.forEach((item, index) => {
+        mensaje += `${index + 1}. ${item.nombre}\n`;
       });
-    });
-    itemsEl.querySelectorAll('[data-cart-remove]').forEach(btn=>{
-      btn.addEventListener('click', ()=>{
-        cart.splice(Number(btn.dataset.cartRemove), 1);
-        renderCart();
-      });
-    });
-  }
 
-  const tabs = document.querySelectorAll('.tab');
-  const allCards = document.querySelectorAll('.card');
-  tabs.forEach(tab=>{
-    tab.addEventListener('click', ()=>{
-      tabs.forEach(t=>t.classList.remove('active'));
-      tab.classList.add('active');
-      const filter = tab.dataset.filter;
-      allCards.forEach(card=>{
-        if(filter === 'all' || card.dataset.cat === filter){
-          card.style.display = '';
-        } else {
-          card.style.display = 'none';
-        }
-      });
-    });
-  });
+      const numeroTelefono = "5300000000"; // Reemplaza con tu número de WhatsApp
+      const url = `https://wa.me/${numeroTelefono}?text=${encodeURIComponent(mensaje)}`;
+      window.open(url, "_blank");
+    }
 
-  document.querySelectorAll('.cart-add-btn').forEach(btn=>{
-    btn.addEventListener('click', ()=>{
-      addToCart(btn.dataset.name, 1);
-      btn.classList.add('just-added');
-      setTimeout(()=> btn.classList.remove('just-added'), 500);
-    });
-  });
-
-  const cartOverlay = document.getElementById('cartOverlay');
-  document.getElementById('cartFab').addEventListener('click', ()=>{
-    cartOverlay.classList.add('open');
-  });
-  document.getElementById('cartClose').addEventListener('click', ()=>{
-    cartOverlay.classList.remove('open');
-  });
-  cartOverlay.addEventListener('click', (e)=>{
-    if(e.target === cartOverlay) cartOverlay.classList.remove('open');
-  });
-
-  // Lightbox: ampliar imagen al tocarla
-  const lightboxOverlay = document.getElementById('lightboxOverlay');
-  const lightboxImg = document.getElementById('lightboxImg');
-  document.querySelectorAll('.card-img').forEach(img=>{
-    img.addEventListener('click', ()=>{
-      lightboxImg.src = img.src;
-      lightboxImg.alt = img.alt;
-      lightboxOverlay.classList.add('open');
-    });
-  });
-  document.getElementById('lightboxClose').addEventListener('click', ()=>{
-    lightboxOverlay.classList.remove('open');
-  });
-  lightboxOverlay.addEventListener('click', (e)=>{
-    if(e.target === lightboxOverlay) lightboxOverlay.classList.remove('open');
-  });
-
-  renderCart();
-</script>
+    // Inicializar cargando la pestaña de frutas
+    renderizarProductos('frutas');
+  </script>
 
 </body>
 </html>
